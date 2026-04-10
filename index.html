@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Discovery Internet Support Engineer Test</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#f4f5f7,#e9e7eb);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+
+   #certificate {
+    width: 900px;
+    height: 600px;
+    padding: 50px;
+    box-sizing: border-box;
+
+    text-align: center;
+    border: 10px solid rgb(152, 172, 177);
+    border-radius: 20px;
+    background: rgb(152, 172, 177);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+}
+
+.cert-title{
+    font-size:30px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.cert-name{
+    font-size:26px;
+    font-weight:bold;
+    color:#333;
+    margin:20px 0;
+}
+
+.cert-id{
+    margin-top:20px;
+    font-size:14px;
+    color:#555;
+}
+
+
+
+#app {
+    background:white;
+    width:520px;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+.option{background:#f1f1f1;padding:12px;margin:8px 0;border-radius:8px;cursor:pointer;}
+.option:hover{background:#dfe6ff;}
+.selected{background:#c7d2fe !important;}
+
+button{width:100%;padding:12px;border:none;background:#667eea;color:white;border-radius:8px;cursor:pointer;margin-top:10px;}
+
+#timer{font-weight:bold;color:#e53e3e;margin-bottom:10px;}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+<div id="startScreen">
+    <h2>Discovery Internet Support Engineer</h2>
+    <input type="text" id="username" placeholder="Enter Your Name" style="width:100%;padding:10px;margin-bottom:10px;">
+    <p>100 Questions | 50 Minutes</p>
+    <button onclick="startExam()">Start Exam</button>
+</div>
+
+<div id="quiz" style="display:none;">
+    <div id="timer"></div>
+    <div id="progress"></div>
+    <h3 id="question"></h3>
+    <div id="options"></div>
+    <button onclick="nextQuestion()">Next</button>
+</div>
+
+<div id="result" style="display:none;"></div>
+
+</div>
+
+<script>
+
+// WRONG OPTIONS
+const distractors=[
+"Reliable protocol",
+"Multiple path network",
+"HTTPS encrypted & HTTP plain text",
+"Server, CCTV, remote access",
+"Username/password based internet",
+"Max packet size",
+"Ping protocol",
+"Path show",
+"127.0.0.1",
+"Website slow open",
+"ISP local server",
+"Slow & loading",
+"Analog recorder",
+"Network camera",
+"DVR cable",
+"LAN cable",
+"Storage Device",
+"Video quality",
+"Power issue",
+"Same IP in two device",
+"Dark view",
+"Mbps = Megabit/sec, MBps = Megabyte/sec (1 Byte = 8 bit)",
+"Response time (ms)",
+"Data drop হওয়া",
+"No response within time",
+"Delay time",
+"IP recorder",
+"Latency variation",
+"0.625 MBps",
+"Max capacity",
+"Domain → IP convert",
+"Device logical address",
+"Hardware unique ID",
+"Fast protocol",
+"32 bit",
+"Actual speed",
+"128 bit",
+"10.x.x.x / 172.16-31.x.x / 192.168.x.x",
+"Internet-visible IP",
+"Network exit point",
+"Network define",
+"Private → Public IP convert",
+"Nearby router interference",
+"Auto IP assign",
+"Server / remote access",
+"authentication based internet",
+"Fiber fault distance detect tool",
+"Slow / timeout",
+"Clear understanding",
+"Network connect",
+"Multiple Device connect",
+"Broadcast device",
+"Traffic control",
+"Distance / interference",
+"Proof & analysis",
+"Range vs speed",
+"1,6,11",
+"Temporary memory",
+"Issue tracking",
+"Wi-Fi name",
+"Central device network",
+"Wi-Fi device",
+"Power via LAN",
+"Multi AP network",
+"Speed reduce",
+"Fiber → Ethernet convert",
+"ISP fiber device",
+"No signal",
+"Signal loss",
+"dBm",
+"signal divide",
+"Gigabit Passive Optical Network",
+"2.5G",
+"Weak signal",
+"Single cable network",
+"No connection",
+"Permanent memory",
+"Network cable",
+"Shield difference",
+"Up to 10Gbps",
+"Logical network separation",
+"Same device connect",
+"Old device connect",
+"Auto detect cable",
+"8 pin",
+"Data transfer",
+"Short fiber",
+"Data processing device",
+"Physical part",
+"Program",
+"Brain",
+"Fast storage",
+"Control software",
+"Data input",
+"Result display",
+"Wide network",
+"Network layout",
+"Circle network",
+"Actual achieved speed",
+"Delay time"
+];
+
+// BASE QUESTIONS
+const base=[
+{ q: "TCP কী?", a: "Reliable protocol" },
+{ q: "Mesh topology?", a: "Multiple path network" },
+{ q: "HTTP vs HTTPS?", a: "HTTPS encrypted & HTTP plain text, " },
+{ q: "Static IP কেন দরকার?", a: "Server, CCTV, remote access" },
+{ q: "PPPoE কী?", a: "Username/password based internet" },
+{ q: "MTU কী?", a: "Max packet size" },
+{ q: "ICMP কী?", a: "Ping protocol" },
+{ q: "Traceroute কী?", a: "Path show" },
+{ q: "Loopback IP ?", a: "127.0.0.1" },
+{ q: "DNS slow হলে কী হয়?", a: "Website slow open" },
+{ q: "Speedtest কোনটা best?", a: "ISP local server" },
+{ q: "Buffering কী?", a: "Slow & loading" },
+{ q: "DVR কী?", a: "Analog recorder" },
+{ q: "IP camera কী?", a: "Network camera" },
+{ q: "BNC connector?", a: "DVR cable" },
+{ q: "RJ45 connector?", a: "LAN cable" },
+{ q: "Hard disk কী?", a: "Storage Device" },
+{ q: "Resolution কী?", a: "Video quality" },
+{ q: "ONU reboot বারবার কেন?", a: "Power issue" },
+{ q: "IP conflict কী?", a: "Same IP in two device" },
+{ q: "Night vision?", a: "Dark view" },
+{ q: "Mbps আর MBps এর পার্থক্য কী?", a: "Mbps = Megabit/sec, MBps = Megabyte/sec (1 Byte = 8 bit)" },
+{ q: "Ping কী?", a: "Response time (ms)" },
+{ q: "Packet loss কী?", a: "Data drop হওয়া" },
+{ q: "Timeout মানে কী?", a: "No response within time" },
+{ q: "Latency কী?", a: "Delay time" },
+{ q: "NVR কী?", a: "IP recorder" },
+{ q: "Jitter কী?", a: "Latency variation" },
+{ q: "5 Mbps মানে কত MBps?", a: "0.625 MBps" },
+{ q: "Bandwidth কী?", a: "Max capacity" },
+{ q: "DNS কী?", a: "Domain → IP convert" },
+{ q: "IP address কী?", a: "Device logical address" },
+{ q: "MAC address কী?", a: "Hardware unique ID" },
+{ q: "UDP কী?", a: "Fast protocol" },
+{ q: "IPv4 address কয় bit?", a: "32 bit" },
+{ q: "Throughput কী?", a: "Actual speed" },
+{ q: "IPv6 address কয় bit?", a: "128 bit" },
+{ q: "Private IP range কী?", a: "10.x.x.x / 172.16-31.x.x / 192.168.x.x" },
+{ q: "Public IP কী?", a: "Internet-visible IP" },
+{ q: "Gateway কী?", a: "Network exit point" },
+{ q: "Subnet mask কী?", a: "Network define" },
+{ q: "NAT কী?", a: "Private → Public IP convert" },
+{ q: "Wi-Fi channel overlap কী?", a: "Nearby router interference" },
+{ q: "DHCP কী?", a: "Auto IP assign" },
+{ q: "Static IP কেন দরকার?", a: "Server / remote access" },
+{ q: "PPPoE কী?", a: "authentication based internet" },
+{ q: "OTDR কী?", a: "Fiber fault distance detect tool" },
+{ q: "Wrong MTU effect?", a: "Slow / timeout" },
+{ q: "Network diagram benefit?", a: "Clear understanding" },
+{ q: "Router কাজ কী?", a: "Network connect" },
+{ q: "Switch কাজ কী?", a: "Multiple Device connect" },
+{ q: "Hub কী?", a: "Broadcast device" },
+{ q: "Firewall কী?", a: "Traffic control" },
+{ q: "Wi-Fi slow কেন?", a: "Distance / interference" },
+{ q: "Downtime log কেন?", a: "Proof & analysis" },
+{ q: "2.4GHz vs 5GHz?", a: "Range vs speed" },
+{ q: "Best Wi-Fi channel?", a: "1,6,11" },
+{ q: "RAM কী?", a: "Temporary memory" },
+{ q: "Ticketing system use?", a: "Issue tracking" },
+{ q: "SSID কী?", a: "Wi-Fi name" },
+{ q: "Star topology?", a: "Central device network" },
+{ q: "Access Point কী?", a: "Wi-Fi device" },
+{ q: "PoE কী?", a: "Power via LAN" },
+{ q: "Mesh WiFi কী?", a: "Multi AP network" },
+{ q: "Repeater drawback?", a: "Speed reduce" },
+{ q: "ONU কী?", a: "Fiber → Ethernet convert" },
+{ q: "OLT কী?", a: "ISP fiber device" },
+{ q: "LOS light মানে?", a: "No signal" },
+{ q: "Fiber bend effect?", a: "Signal loss" },
+{ q: "Optical power unit?", a: "dBm" },
+{ q: "Splitter কাজ কী?", a: "signal divide" },
+{ q: "GPON full form?", a: "Gigabit Passive Optical Network" },
+{ q: "GPON download speed?", a: "2.5G" },
+{ q: "RX low power?", a: "Weak signal" },
+{ q: "Bus topology?", a: "Single cable network" },
+{ q: "Fiber cut হলে?", a: "No connection" },
+{ q: "ROM কী?", a: "Permanent memory" },
+{ q: "Ethernet cable কী?", a: "Network cable" },
+{ q: "UTP vs STP?", a: "Shield difference" },
+{ q: "Cat6 speed?", a: "Up to 10Gbps" },
+{ q: "VLAN কী?", a: "Logical network separation" },
+{ q: "Straight cable?", a: "Same device connect" },
+{ q: "Cross cable?", a: "Old device connect" },
+{ q: "Auto MDI-X?", a: "Auto detect cable" },
+{ q: "RJ45 কয় pin?", a: "8 pin" },
+{ q: "LAN cable use?", a: "Data transfer" },
+{ q: "Patch cord?", a: "Short fiber" },
+{ q: "Computer কী?", a: "Data processing device" },
+{ q: "Hardware কী?", a: "Physical part" },
+{ q: "Software কী?", a: "Program" },
+{ q: "CPU কী?", a: "Brain" },
+{ q: "SSD কী?", a: "Fast storage" },
+{ q: "Operating System?", a: "Control software" },
+{ q: "Input device?", a: "Data input" },
+{ q: "Output device?", a: "Result display" },
+{ q: "WAN কী?", a: "Wide network" },
+{ q: "Topology কী?", a: "Network layout" },
+{ q: "Ring topology?", a: "Circle network" },
+{ q: "Throughput কী?", a: "Actual achieved speed" },
+{ q: "Latency কী?", a: "Delay time" }
+
+];
+
+const questions=[];
+
+// FIXED PART 🔥
+for(let i=0;i<100;i++){
+    let b=base[i%base.length];
+
+    let wrong=shuffle(distractors.filter(x=>x!==b.a)).slice(0,3);
+
+    let opts=shuffle([b.a,...wrong]);
+
+    questions.push({
+        q:(i+1)+". "+b.q,
+        options:opts,
+        answer:opts.indexOf(b.a)
+    });
+}
+
+let current=0,score=0,selected=null;
+let timeLeft=3000;
+let timerInterval;
+let userName="";
+
+function startExam(){
+    userName=document.getElementById("username").value;
+    if(userName.trim()===""){
+        alert("Name likhun!");
+        return;
+    }
+
+    document.getElementById("startScreen").style.display="none";
+    document.getElementById("quiz").style.display="block";
+
+    startTimer();
+    loadQuestion();
+}
+
+function startTimer(){
+    timerInterval=setInterval(()=>{
+        let min=Math.floor(timeLeft/60);
+        let sec=timeLeft%60;
+
+        document.getElementById("timer").innerText=`Time Left: ${min}:${sec<10?'0'+sec:sec}`;
+
+        timeLeft--;
+
+        if(timeLeft<0){
+            clearInterval(timerInterval);
+            showResult();
+        }
+    },1000);
+}
+
+function loadQuestion(){
+    selected=null;
+    let q=questions[current];
+
+    document.getElementById("progress").innerText=`Question ${current+1} of 100`;
+    document.getElementById("question").innerText=q.q;
+
+    let optDiv=document.getElementById("options");
+    optDiv.innerHTML="";
+
+    const labels=['A','B','C','D'];
+
+    q.options.forEach((opt,i)=>{
+        let div=document.createElement("div");
+        div.className="option";
+        div.innerText=`${labels[i]}. ${opt}`;
+
+        div.onclick=()=>{
+            document.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+            div.classList.add('selected');
+            selected=i;
+        }
+
+        optDiv.appendChild(div);
+    });
+}
+
+function nextQuestion(){
+    if(selected===null){
+        alert("Please Select Answer");
+        return;
+    }
+
+    if(selected===questions[current].answer) score++;
+
+    current++;
+
+    if(current<questions.length) loadQuestion();
+    else showResult();
+}
+
+function generateCertID(){
+    return "DIS-" + Math.floor(Math.random()*1000000);
+}
+
+function showResult(){
+    clearInterval(timerInterval);
+
+    document.getElementById("quiz").style.display="none";
+    let res=document.getElementById("result");
+    res.style.display="block";
+
+    let pass=score>=70;
+    let certHTML="";
+
+    if(pass){
+        let certID=generateCertID();
+        let date=new Date().toLocaleDateString();
+
+        certHTML=`
+        <div id="certificate">
+            <div class="cert-title">🎓 Certificate of Achievement</div>
+            <p>This is to certify that</p>
+            <div class="cert-name">${userName}</div>
+            <p>has successfully passed</p>
+            <p><b>Support Engineer</b></p>
+
+            <p>Score: <b>${score}/100</b></p>
+            <p>Date: ${date}</p>
+
+            <div class="cert-id">Certificate ID: ${certID}</div>
+            <p>Managing Director: MD Amdad Hossain Rana</p>
+            <p><b>Discovery Internet</b></p>
+        </div>
+
+        <button onclick="downloadPDF()">📄 Download Certificate</button>
+        `;
+    }
+
+    res.innerHTML=`
+    <h2>Exam Finished</h2>
+    <p>Score: ${score}/100</p>
+    <p>${pass?"✅ PASS":"❌ FAIL"}</p>
+    ${certHTML}
+    `;
+}
+
+function downloadPDF(){
+    const element = document.getElementById("certificate");
+
+    const opt = {
+        margin:       0,
+        filename:     'certificate.pdf',
+        image:        { type: 'jpeg', quality: 1 },
+        html2canvas:  { scale: 3, useCORS: true },
+        jsPDF:        { unit: 'px', format: [900, 600], orientation: 'landscape' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+}
+
+function shuffle(arr){return arr.sort(()=>Math.random()-0.5);}
+
+</script>
+
+</body>
+</html>
