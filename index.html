@@ -8,53 +8,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-body {
+body{
     font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(135deg,#f4f5f7,#e9e7eb);
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
-
-   #certificate {
-    width: 900px;
-    height: 600px;
-    padding: 50px;
-    box-sizing: border-box;
-
-    text-align: center;
-    border: 10px solid rgb(152, 172, 177);
-    border-radius: 20px;
-    background: rgb(152, 172, 177);
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
 }
 
-.cert-title{
-    font-size:30px;
-    font-weight:bold;
-    margin-bottom:20px;
-}
-
-.cert-name{
-    font-size:26px;
-    font-weight:bold;
-    color:#333;
-    margin:20px 0;
-}
-
-.cert-id{
-    margin-top:20px;
-    font-size:14px;
-    color:#555;
-}
-
-
-
-#app {
+#app{
     background:white;
     width:520px;
     padding:25px;
@@ -62,15 +25,56 @@ body {
     box-shadow:0 10px 25px rgba(0,0,0,0.2);
 }
 
-.option{background:#f1f1f1;padding:12px;margin:8px 0;border-radius:8px;cursor:pointer;}
+.option{
+    background:#f1f1f1;
+    padding:12px;
+    margin:8px 0;
+    border-radius:8px;
+    cursor:pointer;
+}
 .option:hover{background:#dfe6ff;}
 .selected{background:#c7d2fe !important;}
 
-button{width:100%;padding:12px;border:none;background:#667eea;color:white;border-radius:8px;cursor:pointer;margin-top:10px;}
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    background:#667eea;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+    margin-top:10px;
+}
 
-#timer{font-weight:bold;color:#e53e3e;margin-bottom:10px;}
+#timer{
+    font-weight:bold;
+    color:#e53e3e;
+    margin-bottom:10px;
+}
+
+/* Certificate */
+#certificate {
+    width: 1122px;   /* A4 landscape width */
+    height: 794px;   /* A4 landscape height */
+    padding: 40px;
+    box-sizing: border-box;
+    page-break-inside: avoid;
+    background: linear-gradient(135deg,#eaf3f5,#dbe9ec);
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+@media print {
+    #certificate {
+        page-break-inside: avoid;
+    }
+}
+
+.cert-title{font-size:30px;font-weight:bold;}
+.cert-name{font-size:26px;font-weight:bold;margin:20px 0;}
+.cert-id{margin-top:20px;font-size:14px;color:#555;}
 </style>
 </head>
+
 <body>
 
 <div id="app">
@@ -96,229 +100,341 @@ button{width:100%;padding:12px;border:none;background:#667eea;color:white;border
 
 <script>
 
-// WRONG OPTIONS
-const distractors=[
-"Reliable protocol",
-"Multiple path network",
-"HTTPS encrypted & HTTP plain text",
-"Server, CCTV, remote access",
-"Redundancy",
-"Max packet size",
-"Ping protocol",
-"Path show",
-"127.0.0.1",
-"Website slow open",
-"ISP local server",
-"Slow & loading",
-"Analog recorder",
-"Network camera",
-"DVR cable",
-"LAN cable",
-"Storage Device",
-"Video quality",
-"Power issue",
-"Same IP in two device",
-"Dark view",
-"Mbps = Megabit/sec, MBps = Megabyte/sec (1 Byte = 8 bit)",
-"Response time (ms)",
-"Data drop হওয়া",
-"No response within time",
-"Delay time",
-"IP recorder",
-"Latency variation",
-"0.625 MBps",
-"Max capacity",
-"Domain → IP convert",
-"Device logical address",
-"Hardware unique ID",
-"Fast protocol",
-"32 bit",
-"Actual speed",
-"128 bit",
-"10.x.x.x / 172.16-31.x.x / 192.168.x.x",
-"Internet-visible IP",
-"Network exit point",
-"Network define",
-"Private → Public IP convert",
-"Nearby router interference",
-"Auto IP assign",
-"Server / remote access",
-"authentication based internet",
-"Fiber fault distance detect tool",
-"Slow / timeout",
-"Clear understanding",
-"Network connect",
-"Multiple Device connect",
-"Broadcast device",
-"Traffic control",
-"Distance / interference",
-"Proof & analysis",
-"Range vs speed",
-"1,6,11",
-"Temporary memory",
-"Issue tracking",
-"Wi-Fi name",
-"Central device network",
-"Wi-Fi device",
-"Power via LAN",
-"Multi AP network",
-"Speed reduce",
-"Fiber → Ethernet convert",
-"ISP fiber device",
-"No signal",
-"Signal loss",
-"dBm",
-"signal divide",
-"Gigabit Passive Optical Network",
-"2.5G",
-"Weak signal",
-"Single cable network",
-"No connection",
-"Permanent memory",
-"Network cable",
-"Shield difference",
-"Up to 10Gbps",
-"Logical network separation",
-"Same device connect",
-"Old device connect",
-"Auto detect cable",
-"8 pin",
-"Data transfer",
-"Short fiber",
-"STP enable",
-"Physical part",
-"Program",
-"Brain",
-"Fast storage",
-"Control software",
-"Data input",
-"Result display",
-"Wide network",
-"Network layout",
-"Circle network",
-"Actual achieved speed",
-"Delay time"
-];
+// প্রশ্ন (প্রতিটায় 4টা option + correct index)
+const base = [
+{
+q:"Ethernet cable means?",
+options:["Network cable","CPU","Software","Router"],
+answer:0
+},
+{
+q:"What is CPU?",
+options:["Brain","Storage","Cable","Switch"],
+answer:0
+},
+{
+q:"HTTP works on which port?",
+options:["80","21","22","443"],
+answer:0
+},
+{
+q:"Which command prevents passwords from being stored in the configuration as plain text on a router or switch?",
+options:["service password-encryption","enable secret","username Cisco password encrypt","enable password"],
+answer:0
+},
+{
+q:"A frame that enters a switch fails the Frame Check Sequence. Which interface counter are incremented?",
+options:["CRC","giants","frame","runts"],
+answer:0
+},
+{
+q:"Which QoS Profile is selected in the GUI when configuring a voice over WLAN deployment?",
+options:["Platinum","Bronze","Silver","Gold"],
+answer:0
+},
+{
+q:"HTTPs works on which port?",
+options:["443","8080","8888","53"],
+answer:0
+},
 
-// BASE QUESTIONS
-const base=[
-{ q: "Ethernet cable means?", a: "Network cable" },
-{ q: "UTP vs STP?", a: "Shield difference" },
-{ q: "Cat6 speed?", a: "Up to 10Gbps" },
-{ q: "What is Virtual LAN ?", a: "Logical network separation" },
-{ q: "Straight cable?", a: "Same device connect" },
-{ q: "Cross cable?", a: "Old device connect" },
-{ q: "Auto MDI-X?", a: "Auto detect cable" },
-{ q: "Number of RJ45 pins?", a: "8 pin" },
-{ q: "SSD কী?", a: "Fast storage" },
-{ q: "What is Buffering ?", a: "Slow & loading" },
-{ q: "What is DVR ?", a: "Analog recorder" },
-{ q: "What is IP camera ?", a: "Network camera" },
-{ q: "BNC connector?", a: "DVR cable" },
-{ q: "RJ45 connector?", a: "LAN cable" },
-{ q: "What is Hard disk ?", a: "Storage Device" },
-{ q: "What is Resolution ?", a: "Video quality" },
-{ q: "IPv6 address কয় bit?", a: "128 bit" },
-{ q: "Select Private IP range ?", a: "10.x.x.x / 172.16-31.x.x / 192.168.x.x" },
-{ q: "What is Public IP ?", a: "Internet-visible IP" },
-{ q: "Wrong MTU effect?", a: "Slow / timeout" },
-{ q: "Network diagram benefit?", a: "Clear understanding" },
-{ q: "Perpose of Router ?", a: "Network connect" },
-{ q: "Why Switch need in networking?", a: "Multiple Device connect" },
-{ q: "What is Hub ?", a: "Broadcast device" },
-{ q: "Why Firewall need ?", a: "Traffic control" },
-{ q: "What is the reason for slow Wi-Fi?", a: "Distance / interference" },
-{ q: "Downtime log কেন?", a: "Proof & analysis" },
-{ q: "2.4GHz vs 5GHz?", a: "Range vs speed" },
-{ q: "Best Wi-Fi channel?", a: "1,6,11" },
-{ q: "RAM কী?", a: "Temporary memory" },
-{ q: "Ticketing system use?", a: "Issue tracking" },
-{ q: "What is SSID in Wireless Technology?", a: "Wi-Fi name" },
-{ q: "Star topology?", a: "Central device network" },
-{ q: "What is Access Point ?", a: "Wi-Fi device" },
-{ q: "What is PoE ?", a: "Power via LAN" },
-{ q: "What is Mesh WiFi ?", a: "Multi AP network" },
-{ q: "Repeater drawback?", a: "Speed reduce" },
-{ q: "What is ONU ?", a: "Fiber → Ethernet convert" },
-{ q: "What is Gateway ?", a: "Network exit point" },
-{ q: "What is Subnet mask ?", a: "Network define" },
-{ q: "Select an answer for NAT ?", a: "Private → Public IP convert" },
-{ q: "What is Wi-Fi channel overlap ?", a: "Nearby router interference" },
-{ q: "What is DHCP ?", a: "Auto IP assign" },
-{ q: "Why need a Static IP ?", a: "Server / remote access" },
-{ q: "What is PPPoE ?", a: "authentication based internet" },
-{ q: "What is OTDR ?", a: "Fiber fault distance detect tool" },
-{ q: "What is TCP ?", a: "Reliable protocol" },
-{ q: "Mesh topology?", a: "Multiple path network" },
-{ q: "HTTP vs HTTPS?", a: "HTTPS encrypted & HTTP plain text, " },
-{ q: "Why need Static IP ?", a: "Server, CCTV, remote access" },
-{ q: "Backup link benefit ?", a: "Redundancy" },
-{ q: "What is MTU ?", a: "Max packet size" },
-{ q: "What is ICMP ?", a: "Ping protocol" },
-{ q: "What is Traceroute ?", a: "Path show" },
-{ q: "Loopback IP ?", a: "127.0.0.1" },
-{ q: "Situation of DNS slow ?", a: "Website slow open" },
-{ q: "Best Speedtest?", a: "ISP local server" },
-{ q: "ONU reboot বারবার কেন?", a: "Power issue" },
-{ q: "What is IP conflict ?", a: "Same IP in two device" },
-{ q: "Night vision?", a: "Dark view" },
-{ q: "What is the difference between Mbps and MBps ?", a: "Mbps = Megabit/sec, MBps = Megabyte/sec (1 Byte = 8 bit)" },
-{ q: "What is Ping ?", a: "Response time (ms)" },
-{ q: "What is Packet loss ?", a: "Data drop হওয়া" },
-{ q: "What is Timeout ?", a: "No response within time" },
-{ q: "What is Latency ?", a: "Delay time" },
-{ q: "What is NVR ?", a: "IP recorder" },
-{ q: "What is Jitter ?", a: "Latency variation" },
-{ q: "5 Mbps মানে কত MBps?", a: "0.625 MBps" },
-{ q: "What is Bandwidth ?", a: "Max capacity" },
-{ q: "What is DNS ?", a: "Domain → IP convert" },
-{ q: "What is IP address ?", a: "Device logical address" },
-{ q: "What do you mean by MAC address ?", a: "Hardware unique ID" },
-{ q: "What is UDP ?", a: "Fast protocol" },
-{ q: "IPv4 address কয় bit?", a: "32 bit" },
-{ q: "What is Throughput ?", a: "Actual speed" },
-{ q: "What is OLT ?", a: "ISP fiber device" },
-{ q: "Situation of LOS light ?", a: "No signal" },
-{ q: "Fiber bend effect?", a: "Signal loss" },
-{ q: "Optical power unit?", a: "dBm" },
-{ q: "Why need fiber Splitter ?", a: "signal divide" },
-{ q: "GPON full form?", a: "Gigabit Passive Optical Network" },
-{ q: "GPON download speed?", a: "2.5G" },
-{ q: "RX low power?", a: "Weak signal" },
-{ q: "Bus topology?", a: "Single cable network" },
-{ q: "Fiber cut's result?", a: "No connection" },
-{ q: "What is Read Only Memory?", a: "Permanent memory" },
-{ q: "Operating System?", a: "Control software" },
-{ q: "Input device?", a: "Data input" },
-{ q: "Output device?", a: "Result display" },
-{ q: "WAN কী?", a: "Wide network" },
-{ q: "What is network topology ?", a: "Network layout" },
-{ q: "A Ring topology means?", a: "Circle network" },
-{ q: "Do you know about Throughput ?", a: "Actual achieved speed" },
-{ q: "What is Latency ?", a: "Delay time" },
-{ q: "LAN cable use?", a: "Data transfer" },
-{ q: "Patch cord?", a: "Short fiber" },
-{ q: "Loop detect হলে কি করবেন??", a: "STP enable" },
-{ q: "What is Hardware?", a: "Physical part" },
-{ q: "What is Software?", a: "Program" },
-{ q: "What is Central Processing Unit of a computer?", a: "Brain" }
+{ q:"IPv6 address কয় bit?", options:["32 bit","64 bit","128 bit","256 bit"], answer:2 },
+{ q:"Private IP range কোনটি?", options:["8.8.8.8","10.x.x.x","1.1.1.1","100.x.x.x"], answer:1 },
+{ q:"Public IP কী?", options:["LAN IP","Router IP","Internet-visible IP","Private IP"], answer:2 },
+{ q:"Wrong MTU এর effect কী?", options:["Fast speed","Slow / timeout","No IP","No MAC"], answer:1 },
+{ q:"Router এর কাজ কী?", options:["Store data","Network connect","Increase RAM","Boost signal"], answer:1 },
+{ q:"Switch কেন ব্যবহার করা হয়?", options:["WiFi দেয়","Multiple device connect","Cable cut","Speed reduce"], answer:1 },
+{ q:"Hub কী?", options:["Smart device","Broadcast device","Router type","Firewall"], answer:1 },
+{ q:"Firewall কেন দরকার?", options:["Speed increase","Traffic control","IP change","WiFi boost"], answer:1 },
+{ q:"Wi-Fi slow হওয়ার কারণ কী?", options:["High speed","Distance / interference","Low RAM","Good signal"], answer:1 },
+{ q:"2.4GHz vs 5GHz difference?", options:["Speed vs power","Range vs speed","Signal vs IP","None"], answer:1 },
+{ q:"Best WiFi channel কোনগুলো?", options:["2,4,6","1,6,11","3,5,7","8,9,10"], answer:1 },
+{ q:"RAM কী?", options:["Permanent memory","Temporary memory","Storage","CPU"], answer:1 },
+
+{
+q:"An email user has been lured into clicking a link in an email sent by their company's security organization. The webpage that opens reports that it was safe but the link could have contained malicious code. Which type of security program is in place?",
+options:["user awareness","brute force attack","Social engineering attack","Physical access control"],
+answer:0
+},
+{
+q:"A network engineer must back up 20 network router configurations globally within a customer environment. Which protocol allows the engineer to perform this function using the Cisco IOS MIB?",
+options:["SNMP","CDP","SMTP","ARP"],
+answer:0
+},
+{
+q:"Which IPv6 address block sends packets to a group address rather than a single address?",
+options:["FF00::/8","FE80::/10"," FC00::/7","2000::/3"],
+answer:0
+},
+{
+q:"Which type of address is the public IP address of a NAT device?",
+options:["inside global","insride local","outside global","inside public"],
+answer:0
+},
+{
+q:"Which two minimum parameters must be configured on an active interface to enable OSPFv2 to operate?",
+options:["OSPF area","OSPf process ID","OSPf stub flag","OSPF MD5 authentication key"],
+answer:0
+},
+{
+q:"Which device performs stateful inspection of traffic?",
+options:["firewall","switch","access point","wireless controller"],
+answer:0
+},
+{
+q:"What criteria is used first during me root port selection process?",
+options:["lowest path cost to the root bridge","lowest neighbor's bridge ID","lowest neighbor's port ID","lowest neighbor's switch ID"],
+answer:0
+},
+
+{ q:"HTTP vs HTTPS?", options:["Same","HTTPS encrypted","HTTP encrypted","None"], answer:1 },
+{ q:"Backup link benefit কী?", options:["Speed low","Redundancy","No use","Cost high"], answer:1 },
+{ q:"MTU কী?", options:["Min packet","Max packet size","Speed","Delay"], answer:1 },
+{ q:"ICMP কী?", options:["Routing protocol","Ping protocol","Transport","Application"], answer:1 },
+{ q:"Traceroute কী?", options:["Speed test","Path show","IP change","Firewall"], answer:1 },
+{ q:"Loopback IP কোনটি?", options:["192.168.1.1","8.8.8.8","127.0.0.1","1.1.1.1"], answer:2 },
+{ q:"DNS slow হলে কী হয়?", options:["Fast load","Website slow open","No internet","IP change"], answer:1 },
+{ q:"IP conflict কী?", options:["Different IP","Same IP in two device","No IP","Public IP"], answer:1 },
+
+{
+q:"Which state does the switch port move to when PortFast is enabled??",
+options:["forwarding","learning","blocking","listening"],
+answer:0
+},
+{
+q:"An engineer must configure Interswitch VLAN communication between a Cisco switch and a thirdparty switch. Which action should be taken?",
+options:["configure IEEE 802.1q","configure IEEE 802.1p","configure ISL","configure DSCP"],
+answer:0
+},
+{
+q:"What is a DHCP client?",
+options:["a host that is configured to request an IP address automatically","a workstation that requests a domain name associated with its IP address","a server that dynamically assigns IP addresses to hosts","a router that statically assigns IP addresses to hosts"],
+answer:0
+},
+{
+q:"Which transport layer protocols carry syslog messages?",
+options:["TCP-UDP","IP","RTP","ARP"],
+answer:0
+},
+{
+q:"A switch is a forwarding a frame out of an interfaces except the interface that received the frame. What is the technical term for this process?",
+options:["flooding","multicast","ARP","CDP"],
+answer:0
+},
+{
+q:"Which device separates networks by security domains?",
+options:["firewall","access point","intrusion protection system","wireless controller"],
+answer:0
+},
+
+{ q:"SSID কী?", options:["IP address","WiFi name","MAC","Password"], answer:1 },
+{ q:"Star topology কী?", options:["Ring network","Bus network","Central device network","Mesh"], answer:2 },
+{ q:"Access Point কী?", options:["Router","WiFi device","Switch","Hub"], answer:1 },
+{ q:"PoE কী?", options:["Power via LAN","Internet type","Cable type","Protocol"], answer:0 },
+{ q:"Mesh WiFi কী?", options:["Single router","Multi AP network","Cable net","LAN only"], answer:1 },
+
+{
+q:"An on-site service desk technician must verify the IP address and DNS server information on a users Windows computer. Which command must the technician enter at the command prompt on the user's computer?",
+options:["ipconfig /all","ifconfig -a","show interface","netstat -r"],
+answer:0
+},
+{
+q:"Which group of channels in the 802.1ib/g/n/ac/ax 2.4 GHz frequency Bands are nonoverlapping channels?",
+options:["channels 1,6, and 11","channels 1,5, and 11","channels 1,6, and 10","channels 1, 5, and 10"],
+answer:0
+},
+{
+q:"Which physical component is distributed among multiple virtual machines running on the same hypervisor?",
+options:["hardware resources","network interfaces","backplane network","external storage"],
+answer:0
+},
+{
+q:"An engineer observes high usage on the 2.4GHz channels and lower usage on the 5GHz channels. What must be configured to allow clients to preferentially use 5GH2 access points?",
+options:["Client Band Select","OEAP Split Tunnel","11ac MU-MIMO","Re- Anchor Roamed Clients"],
+answer:0
+},
+{
+q:"When deploying syslog, which severity level logs informational message?",
+options:["6","4","2","0"],
+answer:0
+},
+{
+q:"What is a characteristic of spine-and-leaf architecture?",
+options:["Each device is separated by the same number of hops","It provides variable latency","It provides greater predictability on STP blocked ports","Each link between leaf switches allows for higher bandwidth"],
+answer:0
+},
+
+{ q:"Latency কী?", options:["Speed","Delay time","Signal","Power"], answer:1 },
+{ q:"NVR কী?", options:["Router","IP recorder","Switch","Camera"], answer:1 },
+{ q:"Jitter কী?", options:["Speed","Latency variation","Signal","IP"], answer:1 },
+{ q:"5 Mbps = কত MBps?", options:["1 MBps","0.625 MBps","5 MBps","2 MBps"], answer:1 },
+{ q:"Bandwidth কী?", options:["Actual speed","Max capacity","Delay","Loss"], answer:1 },
+{ q:"DNS কী?", options:["IP → Domain","Domain → IP","MAC","Port"], answer:1 },
+
+{
+q:"What isbenefit of network automation?",
+options:["faster changes with more reliable results","fewer network failures","increased network security","reduced operational costs"],
+answer:0
+},
+{
+q:"What is the primary function of a Layer 3 device?",
+options:["to pass traffic between different networks","forward traffic within the same broadcast domain","to transmit wireless traffic between hosts","to analyze traffic and drop unauthorized traffic from the Internet "],
+answer:0
+},
+{
+q:"What is the purpose of an SSID?",
+options:["It identifies a WLAN","It identities an individual access point on a WLAN","It differentiates traffic entering access posits","It provides network security"],
+answer:0
+},
+{
+q:"Which value is the unique identifier that an access point uses to establish and maintain wireless connectivity to wireless network devices?",
+options:["SSID","RFID","VLANID","WLANID"],
+answer:0
+},
+{
+q:"Which protocol uses the SSL?",
+options:["HTTPS","Telnet","SSH","HTTP"],
+answer:0
+},
+
+{ q:"IP address কী?", options:["Physical ID","Logical address","Port","Cable"], answer:1 },
+{ q:"MAC address কী?", options:["IP","Unique hardware ID","Port","Speed"], answer:1 },
+{ q:"UDP কী?", options:["Reliable","Fast protocol","Secure","Slow"], answer:1 },
+{ q:"IPv4 address কয় bit?", options:["16","32","64","128"], answer:1 },
+{ q:"Throughput কী?", options:["Max speed","Actual speed","Delay","Loss"], answer:1 },
+
+{
+q:"What causes a port to be placed in the err-disabled state?",
+options:["link flapping","shutdown command issued on the port","latency","nothing plugged into the port"],
+answer:0
+},
+{
+q:"Which field within the access-request packet is encrypted by RADIUS?",
+options:["password","username","authenticator","authorized services"],
+answer:0
+},
+{
+q:"Which protocol is used for secure remote CLI access?",
+options:["SSH","Telnet","HTTP","HTTPS"],
+answer:0
+},
+{
+q:"Which wireless security protocol relies on Perfect Forward Secrecy?",
+options:["WPA3","WPA","WEP","WPA2"],
+answer:0
+},
+{
+q:"What is a similarity OM3 and OM4 fiber optical cable?",
+options:["Both have a 50 micron core diameter","Both have a 100 micron core diameter","Both have a 9 micron core diameter","Both have a 62.5 micron core diameter"],
+answer:0
+},
+{
+q:"What is the primary purpose of private address space?",
+options:["conserve globally unique address space","simplify the addressing in the network","limit the number of nodes reachable via the Internet","reduce network complexity"],
+answer:0
+},
+{
+q:"What does the implementation of a first-hop redundancy protocol protect against on a network?",
+options:["default gateway failure","BGP neighbor flapping","spanning-tree loops","root-bridge loss"],
+answer:0
+},
+{
+q:"What is the role of nonoverlapping channels in a wireless environment?",
+options:["to reduce interference","to allow for channel bonding","to stabilize the RF environment","to increase bandwidth"],
+answer:0
+},
+
+{ q:"DHCP কী?", options:["Manual IP","Auto IP assign","Static IP","DNS"], answer:1 },
+{ q:"Static IP কেন দরকার?", options:["Gaming","Server / remote access","WiFi boost","Low cost"], answer:1 },
+{ q:"PPPoE কী?", options:["Protocol","Authentication based internet","Cable","IP"], answer:1 },
+{ q:"OTDR কী?", options:["Router","Fiber fault detect tool","Switch","ONU"], answer:1 },
+{ q:"TCP কী?", options:["Fast protocol","Reliable protocol","Wireless","IP"], answer:1 },
+
+{
+q:"What is function of the transport layer?",
+options:["flow control","data integrity","packet forwarding","routing"],
+answer:0
+},
+{
+q:"When you choose to read your e-mail using an e-mail client, your e-mail client interacts with which OSI layer?",
+options:["application","transport","presentation","session"],
+answer:0
+},
+{
+q:"What is the default action for packets not matching a firewall filter?",
+options:["The packet will be silently discarded","The packet will be silently pass","The packet will be accepted","The packet will be ignored"],
+answer:0
+},
+{
+q:"Which layer of the OSI model does a router use to make forwarding decisions?",
+options:["Layer 3","Layer 2","Layer 5","Layer 7"],
+answer:0
+},
+{
+q:"Which CIDR notation is the equivalent of the subnet mask of 255.255.192.0?",
+options:["/18","/19","/17","/20"],
+answer:0
+},
+
+{ q:"ONU কী?", options:["Router","Fiber to Ethernet converter","Switch","Hub"], answer:1 },
+{ q:"Gateway কী?", options:["IP address","Network exit point","Cable","Port"], answer:1 },
+{ q:"Subnet mask এর কাজ কী?", options:["IP assign","Network define","Speed control","MAC change"], answer:1 },
+{ q:"NAT কী করে?", options:["Private → Public IP convert","Speed increase","Signal boost","Data store"], answer:0 },
+{ q:"WiFi channel overlap কী?", options:["Good signal","Nearby router interference","Fast net","No issue"], answer:1 },
+
+{
+q:"For the interface ge-1/2/3.4, what does ge represent?",
+options:["Gigabit Ethernet","GRE","Aggregated Ethernet","grether then"],
+answer:0
+},
+{
+q:"Which system-defined user class is able to perform all operations on a device?",
+options:["super-user","read-write","authorized","operator"],
+answer:0
+},
+{
+q:"Which protocol connects multiple autonomous systems?",
+options:["eBGP","iBGP","IS-IS","OSPF"],
+answer:0
+},{
+q:"What is the protocol data unit (PDU) of the Data Link Layer?",
+options:["frame","bit","byte","segment"],
+answer:0
+},
+{
+q:"Which protocol is responsible for learning an IPv4 neighbor's MAC address?",
+options:["ARP","NAT","Tunnel","IPSec"],
+answer:0
+},
+
+{
+q:"IP address version?",
+options:["IPv4 & IPv6","Only IPv4","Only IPv6","None"],
+answer:0
+},
+
+{ q:"Repeater drawback কী?", options:["Speed increase","Speed reduce","No signal","High power"], answer:1 },
+{ q:"Mbps vs MBps?", options:["Same","Mbps bigger","1 Byte = 8 bit","No diff"], answer:2 },
+{ q:"Ping কী?", options:["Speed","Response time","IP","Signal"], answer:1 },
+{ q:"Packet loss কী?", options:["Fast data","Data drop","IP error","Cable"], answer:1 },
+{ q:"OLT কী?", options:["ONU","ISP fiber device","Switch","Router"], answer:1 }
+
+
 
 ];
 
 const questions=[];
 
-// FIXED PART 🔥
+// 100 প্রশ্ন generate
 for(let i=0;i<100;i++){
-    let b=base[i%base.length];
+    let b = base[i % base.length];
 
-    let wrong=shuffle(distractors.filter(x=>x!==b.a)).slice(0,3);
-
-    let opts=shuffle([b.a,...wrong]);
+    let shuffled = shuffle([...b.options]);
 
     questions.push({
         q:(i+1)+". "+b.q,
-        options:opts,
-        answer:opts.indexOf(b.a)
+        options:shuffled,
+        answer:shuffled.indexOf(b.options[b.answer])
     });
 }
 
@@ -329,6 +445,7 @@ let userName="";
 
 function startExam(){
     userName=document.getElementById("username").value;
+
     if(userName.trim()===""){
         alert("Name likhun!");
         return;
@@ -347,7 +464,6 @@ function startTimer(){
         let sec=timeLeft%60;
 
         document.getElementById("timer").innerText=`Time Left: ${min}:${sec<10?'0'+sec:sec}`;
-
         timeLeft--;
 
         if(timeLeft<0){
@@ -448,17 +564,20 @@ function downloadPDF(){
     const element = document.getElementById("certificate");
 
     const opt = {
-        margin:       0,
-        filename:     'certificate.pdf',
-        image:        { type: 'jpeg', quality: 1 },
-        html2canvas:  { scale: 3, useCORS: true },
-        jsPDF:        { unit: 'px', format: [900, 600], orientation: 'landscape' }
+        margin: 0,
+        filename: 'certificate.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'px', format: 'a4', orientation: 'landscape' },
+        pagebreak: { mode: ['avoid-all'] }
     };
 
     html2pdf().set(opt).from(element).save();
 }
 
-function shuffle(arr){return arr.sort(()=>Math.random()-0.5);}
+function shuffle(arr){
+    return arr.sort(()=>Math.random()-0.5);
+}
 
 </script>
 
