@@ -103,13 +103,13 @@ button{
 // প্রশ্ন (প্রতিটায় 4টা option + correct index)
 const base = [
 {
-q:"Ethernet cable means?",
-options:["Network cable","CPU","Software","Router"],
+q:"SNMP কী?",
+options:["Network monitoring protocol","Network maintenance protocol","Network security protocol","Network routing protocol"],
 answer:0
 },
 {
-q:"What is CPU?",
-options:["Processing Unit","Storage","Cable","Switch"],
+q:"VPN use করলে speed কমে কেন?",
+options:["Encryption & longer route","Show other location","Low route distance","Pain & Expensive"],
 answer:0
 },
 {
@@ -144,12 +144,14 @@ answer:0
 { q:"Wrong MTU এর effect কী?", options:["Fast speed","Slow / timeout","No IP","No MAC"], answer:1 },
 { q:"Router এর কাজ কী?", options:["Store data","Network connect","Increase RAM","Boost signal"], answer:1 },
 { q:"Switch কেন ব্যবহার করা হয়?", options:["WiFi দেয়","Multiple device connect","Cable cut","Speed reduce"], answer:1 },
-{ q:"Hub কী?", options:["Smart device","Broadcast device","Router type","Firewall"], answer:1 },
+
+{ q:"Background download কীভাবে চেক?", options:["With help of speedtest server","Task manager / router client list","Routing check","use ICMP PING protocol"], answer:1 },
+
 { q:"Firewall কেন দরকার?", options:["Speed increase","Traffic control","IP change","WiFi boost"], answer:1 },
 { q:"Wi-Fi slow হওয়ার কারণ কী?", options:["High speed","Distance / interference","Low RAM","Good signal"], answer:1 },
 { q:"2.4GHz vs 5GHz difference?", options:["Speed vs power","Range vs speed","Signal vs IP","None"], answer:1 },
 { q:"IX connection কী?", options:["Internet rechibility","Local traffic exchange","Broadband Connection","IP base routing"], answer:1 },
-{ q:"RAM কী?", options:["Permanent memory","Temporary memory","Storage","CPU"], answer:1 },
+{ q:"ONU reboot benefit কী?", options:["Speed boost","Session refresh","Date Time fix","Stable dBm quality "], answer:1 },
 
 {
 q:"An email user has been lured into clicking a link in an email sent by their company's security organization. The webpage that opens reports that it was safe but the link could have contained malicious code. Which type of security program is in place?",
@@ -162,8 +164,8 @@ options:["External → internal service","internal service  → external service
 answer:0
 },
 {
-q:"Which IPv6 address block sends packets to a group address rather than a single address?",
-options:["FF00::/8","FE80::/10"," FC00::/7","2000::/3"],
+q:"Which IPv6 address block is called Public address?",
+options:["2000::/3","FE80::/10"," FC00::/7","FD00::/3"],
 answer:0
 },
 {
@@ -192,7 +194,7 @@ answer:0
 { q:"MTU কী?", options:["Min packet","Max packet size","Speed","Delay"], answer:1 },
 { q:"Trunk port কী?", options:["Routing protocol","Multiple VLAN carry","Transport","Application"], answer:1 },
 { q:"Traceroute কী?", options:["Speed test","Path show","IP change","Firewall"], answer:1 },
-{ q:"Loopback IP কোনটি?", options:["192.168.1.1","8.8.8.8","127.0.0.1","1.1.1.1"], answer:2 },
+{ q:"WPA2-PSK কী?", options:["Password based Internet Protocol","Password based MAC","Password based security","Password based routing"], answer:2 },
 { q:"DNS slow হলে কী হয়?", options:["Fast load","Website slow open","No internet","IP change"], answer:1 },
 { q:"IP conflict কী?", options:["Different IP","Same IP in two device","No IP","Public IP"], answer:1 },
 
@@ -229,7 +231,7 @@ answer:0
 
 { q:"DDoS attack meaning?", options:["IP address attack","Traffic flood attack","MAC flooding attack","DHCP Broadcast"], answer:1 },
 { q:"Star topology কী?", options:["Ring network","Bus network","Central device network","Mesh"], answer:2 },
-{ q:"Access Point কী?", options:["Router","WiFi device","Switch","Hub"], answer:1 },
+{ q:"Small office এর জন্য topology?", options:["Star topology","Mesh topology","Tree topology","Bus topology"], answer:1 },
 { q:"PoE কী?", options:["Power via LAN","Internet type","Cable type","Protocol"], answer:0 },
 { q:"Mesh WiFi কী?", options:["Single router","Multi AP network","Cable net","LAN only"], answer:1 },
 
@@ -267,7 +269,7 @@ answer:0
 { q:"Latency কী?", options:["Speed","Delay time","Signal","Power"], answer:1 },
 { q:"Field engineer safety?", options:["PoE use","PPE use","PPPoE use","PPTP use"], answer:1 },
 { q:"Jitter কী?", options:["Speed","Latency variation","Signal","IP"], answer:1 },
-{ q:"5 Mbps = কত MBps?", options:["1 MBps","0.625 MBps","5 MBps","2 MBps"], answer:1 },
+{ q:"15 Mbps = কত MBps?", options:["1.875 MBps","0.625 MBps","5.625 MBps","2.755 MBps"], answer:0 },
 { q:"Bandwidth কী?", options:["Actual speed","Max capacity","Delay","Loss"], answer:1 },
 { q:"DNS কী?", options:["IP → Domain","Domain → IP","MAC","Port"], answer:1 },
 
@@ -334,8 +336,8 @@ options:["conserve globally unique address space","simplify the addressing in th
 answer:0
 },
 {
-q:"What does the implementation of a first-hop redundancy protocol protect against on a network?",
-options:["default gateway failure","BGP neighbor flapping","spanning-tree loops","root-bridge loss"],
+q:"BIOS কী?",
+options:["Computer boot system","Computer memory system","Computer network system","Computer driver system"],
 answer:0
 },
 {
@@ -345,7 +347,7 @@ answer:0
 },
 
 { q:"DHCP কী?", options:["Manual IP","Auto IP assign","Static IP","DNS"], answer:1 },
-{ q:"Static IP কেন দরকার?", options:["Gaming","Server / remote access","WiFi boost","Low cost"], answer:1 },
+{ q:"Static IP কেন দরকার?", options:["Gaming","Server","WiFi boost","Low cost"], answer:1 },
 { q:"PPPoE কী?", options:["Protocol","Authentication based internet","Cable","IP"], answer:1 },
 { q:"Cat5e cable এর maximum speed কত?", options:["10 Gbps পর্যন্ত (100 meter পর্যন্ত)","1 Gbps পর্যন্ত (100 meter পর্যন্ত)","1 Gbps পর্যন্ত (10 meter পর্যন্ত)","1 Gbps পর্যন্ত (500 meter পর্যন্ত)"], answer:1 },
 { q:"TCP কী?", options:["Fast protocol","Reliable protocol","Wireless","IP"], answer:1 },
@@ -361,8 +363,8 @@ options:["103.120.165.65","103.102.165.65","103.120.166.65","103.120.65.165"],
 answer:0
 },
 {
-q:"What is the default action for packets not matching a firewall filter?",
-options:["The packet will be silently discarded","The packet will be silently pass","The packet will be accepted","The packet will be ignored"],
+q:"WiFi antenna dBi মানে কী?",
+options:["Signal gain level","Signal pass level","Signal accepted level","Signal ignored level"],
 answer:0
 },
 {
@@ -376,10 +378,10 @@ options:["/17","/19","/18","/20"],
 answer:0
 },
 
-{ q:"ONU কী?", options:["Router","Fiber to Ethernet converter","Switch","Hub"], answer:1 },
+{ q:"DVR এ camera সংযোগ কীভাবে হয়?", options:["UTP cable","Coaxial cable","STP cable","LAN cable"], answer:1 },
 { q:"Gateway কী?", options:["IP address","Network exit point","Cable","Port"], answer:1 },
 { q:"Subnet mask এর কাজ কী?", options:["IP assign","Network define","Speed control","MAC change"], answer:1 },
-{ q:"NAT কী করে?", options:["Private → Public IP convert","Speed increase","Signal boost","Data store"], answer:0 },
+{ q:"NAT কী করে?", options:["Private to Public IP overload","Speed increase","Signal boost","Data store"], answer:0 },
 { q:"WiFi channel overlap কী?", options:["Good signal","Nearby router interference","Fast net","No issue"], answer:1 },
 
 {
@@ -415,9 +417,9 @@ answer:0
 
 { q:"UDP কোথায় বেশি ব্যবহার হয়?", options:["Streaming, online game, Browsing","Streaming, online game, VoIP","Streaming, downloding, VoIP","Streaming, online game, DNS"], answer:1 },
 { q:"Which one is Full HD resolution?", options:["1080p","740p","1440p","1880p"], answer:0 },
-{ q:"Ping কী?", options:["Speed","Response time","IP","Signal"], answer:1 },
+{ q:"1:16 splitter loss?", options:["-10.5","-13.5","-15.5","-8.5"], answer:1 },
 { q:"Packet loss কী?", options:["Fast data","Data drop","IP error","Cable"], answer:1 },
-{ q:"OLT কী?", options:["ONU","ISP fiber device","Switch","Router"], answer:1 }
+{ q:"What is IPTV multicast?", options:["One-to-one stream","One-to-many stream","One-to-client stream","One-to-all stream"], answer:1 }
 
 
 
